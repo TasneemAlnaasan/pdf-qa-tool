@@ -1,9 +1,9 @@
-fastapi
-uvicorn
+streamlit
 groq
 langchain
 langchain-community
+langchain-text_splitters
 pypdf
 faiss-cpu
 sentence-transformers
-python-multipart
+python-dotenv
