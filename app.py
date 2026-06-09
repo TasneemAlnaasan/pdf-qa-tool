@@ -13,19 +13,30 @@ from gtts import gTTS
 st.set_page_config(page_title="المساعد الدراسي الذكي", page_icon="📚", layout="wide")
 st.title("📚 المساعد الدراسي الذكي للطلاب")
 
-# تعريف الموديل والذكاء الاصطناعي مباشرة في الواجهة
+# جلب المفاتيح مباشرة من البيئة
+GROQ_KEY = os.getenv("GROQ_API_KEY")
+HF_TOKEN_ENV = os.getenv("HF_TOKEN")
+
+# التحقق الصارم وعرض تنبيه واضح للمستخدم إذا كان هناك نقص بالمفاتيح
+if not GROQ_KEY:
+    st.error("❌ مفتاح GROQ_API_KEY غير معرف في الـ Secrets الخاصة بـ Hugging Face. يرجى إضافته وإعادة تشغيل التطبيق.")
+    st.stop()
+
+# تعريف الموديل والذكاء الاصطناعي مباشرة
 @st.cache_resource
 def load_llm_and_embeddings():
-    client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    # تمرير المفتاح بشكل صريح ومباشر للمكتبة
+    client = Groq(api_key=GROQ_KEY)
+    # تمرير توكن هقنق فيس للمكتبة لحل مشكلة الـ unauthenticated والـ 403
+    embeddings = HuggingFaceEmbeddings(
+        model_name="all-MiniLM-L6-v2",
+        model_kwargs={"token": HF_TOKEN_ENV} if HF_TOKEN_ENV else {}
+    )
     return client, embeddings
 
-try:
-    client, embeddings = load_llm_and_embeddings()
-except Exception as e:
-    st.error("تأكد من إضافة مفتاح GROQ_API_KEY في إعدادات الـ Secrets")
+client, embeddings = load_llm_and_embeddings()
 
-uploaded_file = st.file_uploader("ارفع ملف الدرس (PDF)", type="pdf")
+# ... باقي الكود (زر رفع الملف والتبويبات) يبقى كما هو بدون تعديل ...
 
 if uploaded_file is not None:
     if 'file_processed' not in st.session_state:
