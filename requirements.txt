@@ -7,3 +7,5 @@ pypdf
 faiss-cpu
 sentence-transformers
 python-multipart
+gtts
+gradio

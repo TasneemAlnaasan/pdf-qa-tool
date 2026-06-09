@@ -1,4 +1,12 @@
 
+---
+title: PDF Academic Assistant
+emoji: 📚
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
 # 📄 PDF Q&A Tool
 An AI-powered tool that lets you upload any PDF and ask questions about its content using LLaMA 3.
 
