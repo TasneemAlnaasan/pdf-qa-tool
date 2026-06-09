@@ -13,14 +13,14 @@ st.title("📚 المساعد الدراسي الذكي للطلاب")
 GROQ_KEY = os.getenv("GROQ_API_KEY")
 
 if not GROQ_KEY:
-    st.error("❌ مفتاح GROQ_API_KEY غير معرف في الـ Secrets الخاصة بـ Hugging Face. يرجى مراجعة الإعدادات.")
+    st.error("❌ مفتاح GROQ_API_KEY غير معرف في الـ Secrets الخاصة بـ Hugging Face.")
     st.stop()
 
 # تعريف عميل جروك
 client = Groq(api_key=GROQ_KEY)
 
-# استخدام موديل أصغر ومتاح دائماً للحسابات المجانية لتفادي الـ 403
-SELECTED_MODEL = "llama3-8b-8192" 
+# استخدام الموديل الأحدث والمدعوم حالياً
+SELECTED_MODEL = "llama-3.3-70b-versatile" 
 
 # 2. زر رفع الملف
 uploaded_file = st.file_uploader("ارفع ملف الدرس (PDF)", type="pdf")
@@ -31,7 +31,7 @@ if uploaded_file is not None:
             try:
                 pdf_reader = pypdf.PdfReader(io.BytesIO(uploaded_file.read()))
                 full_text = ""
-                max_pages = min(len(pdf_reader.pages), 10) # 10 صفحات للتجربة السريعة
+                max_pages = min(len(pdf_reader.pages), 10) 
                 for page_num in range(max_pages):
                     page_text = pdf_reader.pages[page_num].extract_text()
                     if page_text:
@@ -48,7 +48,7 @@ if uploaded_file is not None:
                 st.stop()
                 
         with st.spinner("جاري استدعاء الـ AI لتوليد الملخص والبطاقات الذكية... 🤖"):
-            # توليد التلخيص (مع صيد الخطأ وطباعته صراحة)
+            # توليد التلخيص
             try:
                 sum_res = client.chat.completions.create(
                     model=SELECTED_MODEL,
@@ -59,8 +59,7 @@ if uploaded_file is not None:
                 )
                 st.session_state['summary'] = sum_res.choices[0].message.content
             except Exception as e:
-                st.error(f"⚠️ فشل الاتصال بجروك لتوليد التلخيص. تفاصيل الخطأ من السيرفر:\n `{str(e)}`")
-                st.info("💡 إذا ظهر في الأعلى خطأ 403 أو Unauthenticated، فهذا يعني أن الحساب يحتاج لتفعيل برقم هاتف أو أن المفتاح المنسوخ خاطئ.")
+                st.error(f"⚠️ فشل الاتصال بجروك لتوليد التلخيص: `{str(e)}`")
                 st.session_state['summary'] = "تعذر توليد التلخيص بسبب خطأ في الـ API."
             
             # توليد الفلاش كاردز
@@ -80,7 +79,7 @@ if uploaded_file is not None:
                     {"question": "لم يتم توليد البطاقات تلقائياً؟", "answer": f"بسبب خطأ الـ API التالي: {str(e)}"}
                 ]
 
-# 3. عرض الواجهة التفاعلية (جعلناها تظهر دائماً طالما تم معالجة الملف، حتى لو فشل جروك، لكي تظهر الأزرار!)
+# 3. عرض الواجهة التفاعلية والتبويبات
 if st.session_state.get('file_processed'):
     tab1, tab2, tab3 = st.tabs(["💬 اسأل الكتاب", "📝 ملخص الدرس", "🎴 بطاقات الاستذكار (Flashcards)"])
     
