@@ -3,7 +3,7 @@ name: Sync to Hugging Face Spaces
 on:
   push:
     # هنا نحدد اسم فرعك المطور لكي يتم الرفع منه فقط (استبدل feature-branch باسم فرعك الحالي)
-    branches: [feature-branch]
+    branches: [study-buddy]
 
 jobs:
   deploy:
