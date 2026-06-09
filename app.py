@@ -13,21 +13,18 @@ from gtts import gTTS
 st.set_page_config(page_title="المساعد الدراسي الذكي", page_icon="📚", layout="wide")
 st.title("📚 المساعد الدراسي الذكي للطلاب")
 
-# جلب المفاتيح مباشرة من البيئة
+# 1. جلب المفاتيح الصارمة من البيئة لـ Hugging Face
 GROQ_KEY = os.getenv("GROQ_API_KEY")
 HF_TOKEN_ENV = os.getenv("HF_TOKEN")
 
-# التحقق الصارم وعرض تنبيه واضح للمستخدم إذا كان هناك نقص بالمفاتيح
 if not GROQ_KEY:
     st.error("❌ مفتاح GROQ_API_KEY غير معرف في الـ Secrets الخاصة بـ Hugging Face. يرجى إضافته وإعادة تشغيل التطبيق.")
     st.stop()
 
-# تعريف الموديل والذكاء الاصطناعي مباشرة
+# 2. تحميل الموديل والـ Embeddings مرة واحدة في الذاكرة
 @st.cache_resource
 def load_llm_and_embeddings():
-    # تمرير المفتاح بشكل صريح ومباشر للمكتبة
     client = Groq(api_key=GROQ_KEY)
-    # تمرير توكن هقنق فيس للمكتبة لحل مشكلة الـ unauthenticated والـ 403
     embeddings = HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2",
         model_kwargs={"token": HF_TOKEN_ENV} if HF_TOKEN_ENV else {}
@@ -36,12 +33,13 @@ def load_llm_and_embeddings():
 
 client, embeddings = load_llm_and_embeddings()
 
-# ... باقي الكود (زر رفع الملف والتبويبات) يبقى كما هو بدون تعديل ...
+# 3. زر رفع الملف (السطر الذي كان ناقصاً وتسبب بالخطأ)
+uploaded_file = st.file_uploader("ارفع ملف الدرس (PDF)", type="pdf")
 
+# 4. معالجة الملف وبناء قاعدة البيانات الذكية
 if uploaded_file is not None:
     if 'file_processed' not in st.session_state:
         with st.spinner("جاري تحليل الكتاب وبناء المستودع الذكي..."):
-            # حفظ الملف مؤقتاً وقراءته
             with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
                 tmp.write(uploaded_file.getvalue())
                 tmp_path = tmp.name
@@ -58,9 +56,9 @@ if uploaded_file is not None:
             os.unlink(tmp_path)
             st.session_state['file_processed'] = True
             
-        # توليد التلخيص والبطاقات فوراً بدون أخطاء بورتات
+        # توليد التلخيص والبطاقات فوراً عبر Groq Llama 3.3
         with st.spinner("جاري إنشاء التلخيص والـ Flashcards..."):
-            # 1. التلخيص
+            # التلخيص
             sum_res = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[
@@ -70,18 +68,26 @@ if uploaded_file is not None:
             )
             st.session_state['summary'] = sum_res.choices[0].message.content
             
-            # 2. الفلاش كاردز
-            prompt = f"بناءً على النص التالي، قم بإنشاء 4 بطاقات استذكار للمذاكرة. الإجابة بصيغة JSON فقط كقائمة تحتوي 'question' و 'answer'. \nالنص:\n{full_text}"
+            # الفلاش كاردز
+            prompt = f"بناءً على النص التالي، قم بإنشاء 4 بطاقات استذكار للمذاكرة. الإجابة بصيغة JSON فقط كقائمة تحتوي 'question' و 'answer'. لا تضع أي كلام خارج الـ JSON.\nالنص:\n{full_text}"
             flash_res = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.3
             )
             try:
-                st.session_state['flashcards'] = json.loads(flash_res.choices[0].message.content)
+                # تنظيف النص لضمان استخراجه كـ JSON نقي
+                clean_json = flash_res.choices[0].message.content.strip()
+                if "```json" in clean_json:
+                    clean_json = clean_json.split("```json")[1].split("```")[0].strip()
+                st.session_state['flashcards'] = json.loads(clean_json)
             except:
-                st.session_state['flashcards'] = [{"question": "اضغط مجدداً لتوليد البطاقات", "answer": "حدث خطأ في التنسيق"}]
+                st.session_state['flashcards'] = [
+                    {"question": "ما هي الفكرة العامة للملف؟", "answer": "راجع التلخيص في التبويب المجاور لملخص شامل."},
+                    {"question": "كيف تستفيد من هذا الدرس؟", "answer": "عبر طرح أسئلة مباشرة في تبويب اسأل الكتاب."}
+                ]
 
+# 5. عرض الواجهة التفاعلية والتبويبات الثلاثة بعد رفع الملف
 if 'file_processed' in st.session_state:
     tab1, tab2, tab3 = st.tabs(["💬 اسأل الكتاب", "📝 ملخص الدرس", "🎴 بطاقات الاستذكار (Flashcards)"])
     
@@ -96,7 +102,7 @@ if 'file_processed' in st.session_state:
                     response = client.chat.completions.create(
                         model="llama-3.3-70b-versatile",
                         messages=[
-                            {"role": "system", "content": "أنت مساعد ذكي تجيب باللغة العربية بناءً على الـ PDF فقط."},
+                            {"role": "system", "content": "أنت مساعد ذكي تجيب باللغة العربية الفصحى وبشكل مفصل ومبسط بناءً على السياق المرفق فقط وبأسلوب تعليمي."},
                             {"role": "user", "content": f"السياق:\n{context}\n\nالسؤال: {question}"}
                         ]
                     )
@@ -104,7 +110,7 @@ if 'file_processed' in st.session_state:
                     st.write("### 🤖 الإجابة:")
                     st.info(answer)
                     
-                    # تحويل النص إلى صوت مباشرة وعرضه في واجهة Streamlit
+                    # تحويل النص إلى صوت (Audio) مباشر
                     tts = gTTS(text=answer, lang='ar', slow=False)
                     fp = io.BytesIO()
                     tts.write_to_fp(fp)
