@@ -1,4 +1,14 @@
 
+---
+title: PDF QA Tool
+emoji: 📄
+colorFrom: blue
+colorTo: green
+sdk: docker
+app_port: 8501
+pinned: false
+---
+
 # 📄 PDF Q&A Tool
 An AI-powered tool that lets you upload any PDF and ask questions about its content using LLaMA 3.
 
