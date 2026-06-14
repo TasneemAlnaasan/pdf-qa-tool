@@ -108,7 +108,7 @@ if st.session_state.get('file_processed'):
                         fp.seek(0)
                         st.audio(fp.read(), format="audio/mp3")
                     except Exception as e:
-                        st.error(f"تعذر توليد الصوت مؤقتا. لطفا أعد المحاولة مرة أخرى{str(e)}")
+                        st.warning(f"تعذر توليد الصوت مؤقتا. لطفا أعد المحاولة مرة أخرى{str(e)}")
 
     with tab2:
         st.write("### 📝 ملخص سريع لأهم نقاط الدرس:")
