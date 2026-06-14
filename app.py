@@ -100,15 +100,15 @@ if st.session_state.get('file_processed'):
                         answer = response.choices[0].message.content
                         st.write("### 🤖 الإجابة:")
                         st.info(answer)
-                    try:
-                        time.sleep(1)    
-                        tts = gTTS(text=answer, lang='ar', slow=False)
-                        fp = io.BytesIO()
-                        tts.write_to_fp(fp)
-                        fp.seek(0)
-                        st.audio(fp.read(), format="audio/mp3")
-                    except Exception as e:
-                        st.warning(f"تعذر توليد الصوت مؤقتا. لطفا أعد المحاولة مرة أخرى{str(e)}")
+                        try:
+                            time.sleep(1)    
+                            tts = gTTS(text=answer, lang='ar', slow=False)
+                            fp = io.BytesIO()
+                            tts.write_to_fp(fp)
+                            fp.seek(0)
+                            st.audio(fp.read(), format="audio/mp3")
+                        except Exception as e:
+                            st.warning(f"تعذر توليد الصوت مؤقتا. لطفا أعد المحاولة مرة أخرى{str(e)}")
 
     with tab2:
         st.write("### 📝 ملخص سريع لأهم نقاط الدرس:")
