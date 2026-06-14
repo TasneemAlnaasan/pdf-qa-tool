@@ -7,6 +7,7 @@ from langchain_community.embeddings import HuggingFaceEmbeddings
 import os
 import tempfile
 from dotenv import load_dotenv
+from langsmith import traceable
 
 load_dotenv()
 
