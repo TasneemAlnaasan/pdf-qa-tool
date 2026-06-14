@@ -5,6 +5,7 @@ import io
 import json
 from gtts import gTTS
 import pypdf
+import time 
 
 st.set_page_config(page_title="المساعد الدراسي الذكي", page_icon="📚", layout="wide")
 st.title("📚 المساعد الدراسي الذكي للطلاب")
@@ -99,14 +100,15 @@ if st.session_state.get('file_processed'):
                         answer = response.choices[0].message.content
                         st.write("### 🤖 الإجابة:")
                         st.info(answer)
-                        
+                    try:
+                        time.sleep(1)    
                         tts = gTTS(text=answer, lang='ar', slow=False)
                         fp = io.BytesIO()
                         tts.write_to_fp(fp)
                         fp.seek(0)
                         st.audio(fp.read(), format="audio/mp3")
                     except Exception as e:
-                        st.error(f"خطأ أثناء جلب الإجابة: {str(e)}")
+                        st.error(f"تعذر توليد الصوت مؤقتا. لطفا أعد المحاولة مرة أخرى{str(e)}")
 
     with tab2:
         st.write("### 📝 ملخص سريع لأهم نقاط الدرس:")
