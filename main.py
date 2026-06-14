@@ -16,6 +16,7 @@ embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 vector_store = None
 
 @app.post("/upload")
+@traceable
 async def upload_pdf(file: UploadFile = File(...)):
     global vector_store
     
@@ -40,6 +41,7 @@ async def upload_pdf(file: UploadFile = File(...)):
     return {"message": "تم رفع الـ PDF بنجاح!"}
 
 @app.post("/ask")
+@traceable
 async def ask_question(question: str):
     global vector_store
     
