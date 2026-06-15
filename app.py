@@ -71,7 +71,10 @@ if uploaded_file is not None:
                 clean_json = flash_res.choices[0].message.content.strip()
                 if "```json" in clean_json:
                     clean_json = clean_json.split("```json")[1].split("```")[0].strip()
-                st.session_state['flashcards'] = json.loads(clean_json)
+                    st.session_state['flashcards'] = json.loads(clean_json)
+                elif "```" in clean_json:
+                    clean_json = clean_json.split("```")[1].split("```")[0].strip()
+                    st.session_state['flashcards'] = json.loads(clean_json)
             except Exception as e:
                 st.session_state['flashcards'] = [
                     {"question": "لم يتم توليد البطاقات تلقائياً؟", "answer": f"بسبب خطأ الـ API التالي: {str(e)}"}
