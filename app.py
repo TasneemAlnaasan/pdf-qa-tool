@@ -62,7 +62,7 @@ if uploaded_file is not None:
                 st.session_state['summary'] = "تعذر توليد التلخيص بسبب خطأ في الـ API."
 
             try:
-                prompt = f"قم بإنشاء 3 بطاقات استذكار للمذاكرة بناءً على النص التالي. الإجابة بصيغة JSON فقط كقائمة تحتوي 'question' و 'answer'.\nالنص:\n{st.session_state['full_text']}"
+                prompt = f"أنشئ 3 بطاقات استذكار بـ {language}. JSON فقط كقائمة تحتوي 'question' و 'answer'.\nالنص:\n{st.session_state['full_text']}"
                 flash_res = client.chat.completions.create(
                     model=SELECTED_MODEL,
                     messages=[{"role": "user", "content": prompt}],
@@ -81,7 +81,7 @@ if st.session_state.get('file_processed'):
     tab1, tab2, tab3 = st.tabs(["💬 اسأل الكتاب", "📝 ملخص الدرس", "🎴 بطاقات الاستذكار (Flashcards)"])
 
     with tab1:
-        question = st.text_input("اكتب سؤالك عن المحاضرة بالعربي:")
+        question = st.text_input("اكتب سؤالك عن الملف هنا:")
         if st.button("ابحث عن الإجابة"):
             if question:
                 with st.spinner("جاري صياغة الجواب من الكتاب..."):
@@ -98,7 +98,8 @@ if st.session_state.get('file_processed'):
                         st.info(answer)
                         try:
                             time.sleep(1)
-                            tts = gTTS(text=answer, lang='ar', slow=False)
+                            lang_code='ar' if language == العربية else 'en' if language =="English" else 'fr' if language =="Français" else 'es'
+                            tts = gTTS(text=answer, lang=lang_code, slow=False)
                             fp = io.BytesIO()
                             tts.write_to_fp(fp)
                             fp.seek(0)
