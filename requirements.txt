@@ -1,10 +1,5 @@
-fastapi
-uvicorn
+gradio
 groq
-langchain
-langchain-community
 pypdf
-faiss-cpu
-sentence-transformers
-python-multipart
-streamlit 
+gtts
+python-dotenv
