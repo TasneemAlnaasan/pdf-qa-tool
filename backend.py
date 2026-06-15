@@ -37,14 +37,20 @@ def generate_flashcards(text):
         messages=[{"role": "user", "content": prompt}],
         temperature=0.2
     )
-    clean_json = response.choices[0].message.content.strip()
-    if "```json" in clean_json:
-        clean_json = clean_json.split("```json")[1].split("```")[0].strip()
-    cards = json.loads(clean_json)
-    result = ""
-    for i, card in enumerate(cards):
-        result += f"بطاقة {i+1}:\nسؤال: {card.get('question')}\nجواب: {card.get('answer')}\n\n"
-    return result
+    try:
+        clean_json = response.choices[0].message.content.strip()
+        if "```json" in clean_json:
+            clean_json = clean_json.split("```json")[1].split("```")[0].strip()
+        elif "```" in clean_json:
+            clean_json = clean_json.split("```")[1].split("```")[0].strip()
+        cards = json.loads(clean_json)
+        result = ""
+        for i, card in enumerate(cards):
+            result += f"بطاقة {i+1}:\nسؤال: {card.get('question')}\nجواب: {card.get('answer')}\n\n"
+        return result
+    except:
+        return "تعذر توليد البطاقات، جرب مرة ثانية"
+
 
 def answer_question(text, question):
     response = client.chat.completions.create(
