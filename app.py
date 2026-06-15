@@ -32,7 +32,7 @@ if 'full_text' not in st.session_state:
 uploaded_file = st.file_uploader("ارفع الملف(PDF)", type="pdf")
 
 language = st.selectbox(
-    "اختر لغة الإجابة والتلخيص والبطاقات:",
+    "اختر لغة الإجابة:",
     ["العربية", "English", "Français", "Español"]
 )
 
