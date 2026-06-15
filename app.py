@@ -98,7 +98,7 @@ if st.session_state.get('file_processed'):
                         st.info(answer)
                         try:
                             time.sleep(1)
-                            lang_code='ar' if language == العربية else 'en' if language =="English" else 'fr' if language =="Français" else 'es'
+                            lang_code='ar' if language == "العربية" else 'en' if language =="English" else 'fr' if language =="Français" else 'es'
                             tts = gTTS(text=answer, lang=lang_code, slow=False)
                             fp = io.BytesIO()
                             tts.write_to_fp(fp)
