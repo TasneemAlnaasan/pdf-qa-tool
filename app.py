@@ -20,6 +20,10 @@ client = Groq(api_key=GROQ_KEY)
 SELECTED_MODEL = "llama-3.3-70b-versatile"
 
 uploaded_file = st.file_uploader("ارفع ملف الدرس (PDF)", type="pdf")
+language = st.selectbox(
+        "اختر لغة الإجابة والتلخيص:",
+            ["العربية", "English", "Français", "Español"]
+            )
 
 if uploaded_file is not None:
     if 'file_processed' not in st.session_state:
@@ -48,7 +52,7 @@ if uploaded_file is not None:
                 sum_res = client.chat.completions.create(
                     model=SELECTED_MODEL,
                     messages=[
-                        {"role": "system", "content": "لخص النص التالي باللغة العربية بأسلوب نقاط واضحة وموجزة."},
+                        {"role": "system", "content": f"لخص النص التالي بـ {language} بأسلوب نقاط واضحة وموجزة."},
                         {"role": "user", "content": st.session_state['full_text']}
                     ]
                 )
@@ -85,7 +89,7 @@ if st.session_state.get('file_processed'):
                         response = client.chat.completions.create(
                             model=SELECTED_MODEL,
                             messages=[
-                                {"role": "system", "content": "أجب باللغة العربية بناءً على النص المرفق."},
+                                {"role": "system", "content": f"أجب بـ {language} بناءً على النص المرفق."},
                                 {"role": "user", "content": f"الكتاب:\n{st.session_state['full_text']}\n\nالسؤال: {question}"}
                             ]
                         )
