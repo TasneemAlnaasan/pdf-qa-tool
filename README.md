@@ -7,33 +7,35 @@ colorTo: indigo
 sdk: docker
 pinned: false
 ---
-# 📄 PDF Q&A Tool
-An AI-powered tool that lets you upload any PDF and ask questions about its content using LLaMA 3.
+
+# 📚 المساعد الدراسي الذكي للطلاب
+
+An AI-powered study assistant that helps students learn smarter.
+
+🔗 **Live Demo:** https://huggingface.co/spaces/Tsneemk/study-buddy
 
 ## 🎯 What does it do?
-- Upload any PDF file
-- Ask questions in Arabic or English
-- Get instant answers based on the PDF content
+- Upload any PDF study material
+- Get an instant summary in your language
+- Auto-generated Flashcards for studying
+- Ask questions and get voice answers
 
 ## 🛠️ Built With
-- **FastAPI** — Backend API
 - **Streamlit** — User Interface
 - **Groq + LLaMA 3** — AI Model
-- **LangChain** — PDF processing
-- **FAISS** — Vector search
+- **gTTS** — Text to Speech
+- **Docker** — Deployment
 
 ## 🚀 How to run
 1. Clone the repository
 2. Install dependencies:
-pip install -r requirements.txt
-3. Create `.env` file and add your Groq API Key:
-GROQ_API_KEY=your_api_key_here
-4. Run FastAPI:
-uvicorn main:app --reload
-5. Run Streamlit:
-streamlit run app.py
+   pip install -r requirements.txt
+3. Add your API Key:
+   - On Hugging Face: Add GROQ_API_KEY to Secrets
+   - Locally: Create `.env` file and add GROQ_API_KEY=your_api_key_here
+4. Run the app:
+   streamlit run app.py
 
 ## 💡 Use Cases
-- Students can upload study material and ask questions
-- Professionals can analyze long documents instantly
-- Anyone who wants to extract information from PDFs quickly
+- Students studying for exams
+- Anyone who wants to learn from PDFs faster

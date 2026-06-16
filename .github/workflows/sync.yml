@@ -2,7 +2,6 @@ name: Sync to Hugging Face Spaces
 
 on:
   push:
-    # هنا نحدد اسم فرعك المطور لكي يتم الرفع منه فقط (استبدل feature-branch باسم فرعك الحالي)
     branches: [study-buddy]
 
 jobs:
@@ -17,8 +16,6 @@ jobs:
 
       - name: Push to Hugging Face
         env:
-          # هنا نربط الحسابين بالـ Token السري
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # استبدل USERNAME باسم حسابك في هقنق فيس، و SPACE_NAME باسم الـ Space الذي أنشأته
-          git push --force https://writingcontent:$HF_TOKEN@huggingface.co/spaces/writingcontent/study-buddy HEAD:main
+          git push --force https://Tsneemk:$HF_TOKEN@huggingface.co/spaces/Tsneemk/study-buddy HEAD:main

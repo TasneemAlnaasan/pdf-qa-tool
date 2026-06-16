@@ -11,7 +11,6 @@ RUN pip install --no-cache-dir --upgrade pip && \
 
 COPY . .
 
-# إعطاء صلاحيات كاملة للمجلد لضمان القدرة على قراءة المتغيرات البيئية وحفظ الملفات المؤقتة
 RUN chmod -R 777 /app
 
 CMD ["streamlit", "run", "app.py", "--server.port", "7860", "--server.address", "0.0.0.0", "--server.fileWatcherType", "none", "--server.enableCORS", "false", "--server.enableXsrfProtection", "false"]
