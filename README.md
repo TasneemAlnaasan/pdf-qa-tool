@@ -1,4 +1,3 @@
-
 ---
 title: PDF QA Tool
 emoji: 📄
@@ -8,27 +7,30 @@ sdk: gradio
 pinned: false
 ---
 
-# 📄 PDF Q&A Tool
+# 📄 PDF Summarizer
 
-An AI-powered tool that lets you upload any PDF and ask questions about its content using LLaMA 3.
+An AI-powered tool that summarizes any PDF instantly using LLaMA 3.
+
+🔗 **Live Demo:** https://huggingface.co/spaces/Tsneemk/pdf-qa-tool 
 
 ## 🎯 What does it do?
 - Upload any PDF file
-- Ask questions in Arabic or English
-- Get instant answers based on the PDF content
-- Auto-generated Flashcards
+- Get an instant summary in Arabic
 
 ## 🛠️ Built With
 - **Gradio** — User Interface
 - **Groq + LLaMA 3** — AI Model
-- **LangChain** — PDF processing
 
 ## 🚀 How to run
 1. Clone the repository
 2. Install dependencies:
    pip install -r requirements.txt
-   3. Create `.env` file:
-      GROQ_API_KEY=your_api_key_here
-      4. Run the app:
-         python app.py
-         
+3. Add your API Key:
+   - On Hugging Face: Add GROQ_API_KEY to Secrets
+   - Locally: Create `.env` file and add GROQ_API_KEY=your_api_key_here
+4. Run the app:
+   python app.py
+
+## 💡 Use Cases
+- Students who want to summarize study material quickly
+- Professionals who need to analyze long documents instantly

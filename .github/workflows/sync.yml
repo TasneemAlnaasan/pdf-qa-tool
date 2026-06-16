@@ -17,5 +17,5 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          git push  --force https://writingcontent:$HF_TOKEN@huggingface.co/spaces/writingcontent/pdf-qa-tool HEAD:main
+          git push  --force https://Tsneemk:$HF_TOKEN@huggingface.co/spaces/Tsneemk/pdf-qa-tool HEAD:main
       
