@@ -16,6 +16,7 @@ An AI-powered tool that summarizes any PDF instantly using LLaMA 3.
 ## 🎯 What does it do?
 - Upload any PDF file
 - Get an instant summary in Arabic
+- Download the summary as a PDF file
 
 ## 🛠️ Built With
 - **Gradio** — User Interface
