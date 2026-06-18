@@ -2,4 +2,7 @@ gradio
 groq
 pypdf
 fpdf2
+arabic-reshaper
+python-bidi
+
 
