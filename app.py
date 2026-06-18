@@ -13,8 +13,8 @@ import urllib.request
 font_path = "Amiri-Regular.ttf"
 if not os.path.exists(font_path):
     urllib.request.urlretrieve(
-        "https://github.com/aliftype/amiri/releases/download/1.000/Amiri-Regular.ttf",
-        font_path
+    "https://github.com/google/fonts/raw/main/ofl/amiri/Amiri-Regular.ttf",
+    font_path
     )
 
 def create_pdf(summary_text):
