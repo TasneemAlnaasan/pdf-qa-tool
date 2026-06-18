@@ -7,6 +7,16 @@ import arabic_reshaper
 from bidi.algorithm import get_display
 from backend import process_pdf, generate_summary
 
+import urllib.request
+
+# تحميل الخط تلقائياً لو ما موجود
+font_path = "Amiri-Regular.ttf"
+if not os.path.exists(font_path):
+    urllib.request.urlretrieve(
+        "https://github.com/aliftype/amiri/releases/download/1.000/Amiri-Regular.ttf",
+        font_path
+    )
+
 def create_pdf(summary_text):
     # 1. إنشاء كائن الـ PDF وتفعيل دعم الـ UTF-8
     pdf = FPDF()
