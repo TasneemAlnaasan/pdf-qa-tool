@@ -4,7 +4,7 @@ import io
 import os
 
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
-SELECTED_MODEL = "llama-3.1-8b-instant"
+SELECTED_MODEL = "openai/gpt-oss-20b"
 
 def process_pdf(file):
     pdf_reader = pypdf.PdfReader(io.BytesIO(file))
