@@ -9,7 +9,7 @@ from backend import process_pdf, generate_summary
 
 import urllib.request
 
-# تحميل الخط تلقائياً لو ما موجود
+# تحميل الخط تلقائياً في حال عدم وجوده
 font_path = "Amiri-Regular.ttf"
 if not os.path.exists(font_path):
     urllib.request.urlretrieve(
@@ -23,14 +23,13 @@ def create_pdf(summary_text):
     pdf.add_page()
     
     # 2. تسجيل وتفعيل الخط العربي (تأكد من وجود الملف في نفس المجلد)
-    # إذا اخترت خطاً آخر، قم بتغيير الاسم والمسار هنا
     font_path = "Amiri-Regular.ttf" 
     
     if os.path.exists(font_path):
         pdf.add_font("ArabicFont", style="", fname=font_path, uni=True)
         pdf.set_font("ArabicFont", size=14)
     else:
-        # خط احتياطي في حال عدم وجود الملف (لكن لن يعرض العربية بشكل صحيح)
+        # خط احتياطي في حال عدم وجود الملف
         pdf.set_font("Helvetica", size=12)
         print("تحذير: لم يتم العثور على ملف الخط العربي Amiri-Regular.ttf")
 
