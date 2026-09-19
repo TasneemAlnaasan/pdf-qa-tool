@@ -9,7 +9,7 @@ pinned: false
 
 # 📄 PDF Summarizer
 
-An AI-powered tool that summarizes any PDF instantly using LLaMA 3.
+An AI-powered tool that summarizes any PDF instantly.
 
 🔗 **Live Demo:** https://huggingface.co/spaces/Tsneemk/pdf-qa-tool 
 
